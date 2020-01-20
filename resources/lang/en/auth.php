@@ -15,5 +15,10 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'logged_out' => 'Logged Out Succesfully. See you!',
+    'logout_failed' => 'The user cannot be logged out',
+    'api' => [
+
+    ]
 
 ];
