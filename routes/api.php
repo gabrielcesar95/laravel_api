@@ -13,15 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('login', 'ApiController@login');
-Route::post('register', 'ApiController@register');
+Route::group(['as' => 'auth.', 'namespace' => 'Auth'], function () {
+    Route::post('login', 'ApiController@login');
+    Route::post('register', 'ApiController@register');
+
+    Route::middleware(['auth.jwt'])->group(function () {
+        Route::get('logout', 'ApiController@logout');
+    });
+});
 
 Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('logout', 'ApiController@logout');
-
-    Route::get('tasks', 'TaskController@index');
-    Route::get('tasks/{id}', 'TaskController@show');
-    Route::post('tasks', 'TaskController@store');
-    Route::put('tasks/{id}', 'TaskController@update');
-    Route::delete('tasks/{id}', 'TaskController@destroy');
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+        Route::get('/', 'UserController@index');
+        Route::get('/{id}', 'UserController@show');
+        Route::post('/', 'UserController@store');
+        Route::put('/{id}', 'UserController@update');
+        Route::delete('/{id}', 'UserController@destroy');
+    });
 });
